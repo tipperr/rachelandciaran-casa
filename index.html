@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rachel &amp; Ciaran's Casa — Leaderboard</title>
+  <meta name="description" content="Rewarding our guests with absolutely nothing since 2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="site-name">Rachel &amp; Ciaran's Casa</div>
+      <h1 class="tagline">
+        Rewarding our guests with<br>
+        <span class="nothing">absolutely nothing</span> since 2025.
+      </h1>
+      <div id="live-counter" aria-live="polite">Loading…</div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+
+    <!-- Skeleton -->
+    <div id="skeleton" aria-hidden="true">
+      <div class="skeleton-line medium" style="margin-top:2rem;"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-rows">
+        <div class="skeleton-row">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text">
+            <div class="skeleton-line medium" style="margin-bottom:0.4rem;"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text">
+            <div class="skeleton-line medium" style="margin-bottom:0.4rem;"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text">
+            <div class="skeleton-line medium" style="margin-bottom:0.4rem;"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text">
+            <div class="skeleton-line medium" style="margin-bottom:0.4rem;"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text">
+            <div class="skeleton-line medium" style="margin-bottom:0.4rem;"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div id="error-state" hidden role="alert">
+      <p>The competition is temporarily suspended.</p>
+      <p class="error-sub">(Couldn't load the standings.)</p>
+      <button id="retry-btn" type="button">Try again</button>
+    </div>
+
+    <!-- Content -->
+    <div id="content" hidden>
+
+      <section class="podium-section" aria-label="Top 3">
+        <h2 class="section-heading">Hall of Fame</h2>
+        <div id="podium" role="list"></div>
+      </section>
+
+      <section class="table-section" aria-label="Full rankings">
+        <h2 class="section-heading">Full Rankings</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-rank" scope="col">#</th>
+                <th class="col-photo" scope="col"><span class="sr-only">Photo</span></th>
+                <th class="col-name" scope="col">Guest</th>
+                <th class="col-nights" scope="col">Nights</th>
+                <th class="col-visits" scope="col">Visits</th>
+                <th class="col-badge" scope="col">Status</th>
+                <th class="col-last" scope="col">Last Visit</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div id="gap-narrative" hidden aria-live="polite"></div>
+
+    </div><!-- /content -->
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      Built by R&amp;C · data: a sheet Ciaran definitely doesn't check too often
+    </div>
+  </footer>
+
+  <!-- Screen-reader only utility -->
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+
+  <script src="script.js?v=4"></script>
+</body>
+</html>
