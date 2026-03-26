@@ -67,7 +67,7 @@ function relativeTime(dateStr) {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return dateStr; // non-parseable: display as-is
   const days = Math.floor((Date.now() - d.getTime()) / 86400000);
-  if (days === 0) return 'today';
+  if (days <= 0) return 'today';
   if (days === 1) return 'yesterday';
   if (days < 7) return `${days} days ago`;
   if (days < 14) return '1 week ago';
