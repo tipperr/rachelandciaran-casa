@@ -226,48 +226,77 @@ function renderTable(sorted) {
   });
 }
 
-// ─── Render: Gap Narrative ────────────────────────────────────────────────────
+// ─── Person Card ──────────────────────────────────────────────────────────────
 
-function renderGapNarrative(sorted) {
-  const section = document.getElementById('gap-narrative');
-  section.innerHTML = '';
-  if (sorted.length <= 1) { section.hidden = true; return; }
-
-  const lines = [];
+function personalGapSentence(sorted, person, rank) {
   const leader = sorted[0];
-
-  // Check for tied leaders
   const tiedAtTop = sorted.filter(p => p.nights === leader.nights);
-  if (tiedAtTop.length > 1) {
-    const names = tiedAtTop.map(p => p.name);
-    const last = names.pop();
-    lines.push(`${names.join(', ')} and ${last} are tied at the top with ${leader.nights} nights.`);
+  if (rank === 1 && tiedAtTop.length === 1) return "You're in the lead. Defend it.";
+  if (tiedAtTop.includes(person)) {
+    const others = tiedAtTop.filter(p => p !== person).map(p => p.name);
+    const last = others.pop();
+    const names = others.length ? `${others.join(', ')} and ${last}` : last;
+    return `You're tied at the top with ${names}.`;
   }
+  const gap = leader.nights - person.nights;
+  const leaderNames = tiedAtTop.length > 1 ? 'the leaders' : leader.name;
+  return `You need ${gap} more night${gap === 1 ? '' : 's'} to challenge ${leaderNames}.`;
+}
 
-  // Gap sentences for everyone not in shared first place
-  sorted.slice(tiedAtTop.length).forEach(person => {
-    const gap = leader.nights - person.nights;
-    if (gap > 0) {
-      lines.push(`${person.name} needs ${gap} more night${gap === 1 ? '' : 's'} to challenge ${tiedAtTop.length > 1 ? 'the leaders' : leader.name}.`);
-    }
-  });
+function renderPersonCard(sorted, person, rank) {
+  const section = document.getElementById('person-section');
+  const container = document.getElementById('person-card');
+  container.innerHTML = '';
 
-  if (lines.length === 0) { section.hidden = true; return; }
+  const borderColor = rank === 1 ? 'var(--accent)' : rank === 2 ? 'var(--silver)' : rank === 3 ? 'var(--bronze)' : 'var(--border)';
 
-  lines.forEach(line => {
-    const p = document.createElement('p');
-    p.textContent = line;
-    section.appendChild(p);
-  });
+  const card = document.createElement('div');
+  card.className = 'person-card';
+  card.style.borderLeftColor = borderColor;
+
+  const photoEl = makePhoto(person, 72);
+
+  const info = document.createElement('div');
+  info.className = 'person-card-info';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'person-card-name';
+  nameEl.textContent = person.name;
+
+  const meta = document.createElement('div');
+  meta.className = 'person-card-meta';
+  meta.textContent = `${person.badge ? person.badge + ' ' : ''}${person.nights} night${person.nights !== 1 ? 's' : ''} · ${person.visits} visit${person.visits !== 1 ? 's' : ''} · last visit ${relativeTime(person.last_visit)}`;
+
+  const sentence = document.createElement('div');
+  sentence.className = 'person-card-sentence';
+  sentence.textContent = personalGapSentence(sorted, person, rank);
+
+  info.append(nameEl, meta, sentence);
+
+  const rankEl = document.createElement('div');
+  rankEl.className = 'person-card-rank';
+  rankEl.textContent = `#${rank}`;
+
+  card.append(photoEl, info, rankEl);
+  container.appendChild(card);
   section.hidden = false;
 }
 
 // ─── ?person= Highlight ───────────────────────────────────────────────────────
 
-function applyPersonParam() {
+function applyPersonParam(sorted) {
   const param = new URLSearchParams(window.location.search).get('person');
   if (!param) return;
   const target = param.toLowerCase();
+
+  const idx = sorted.findIndex(p => p.name.toLowerCase() === target);
+  if (idx !== -1) {
+    const person = sorted[idx];
+    const rank = idx + 1;
+    renderPersonCard(sorted, person, rank);
+    document.title = `${person.name} · #${rank} · ${person.nights} night${person.nights !== 1 ? 's' : ''}`;
+  }
+
   const row = document.querySelector(`tr[data-name="${CSS.escape(target)}"]`);
   if (!row) return;
   row.classList.add('highlighted');
@@ -336,7 +365,7 @@ async function fetchAndRender() {
     renderTable(sorted);
     showContent();
     startAnimations(sorted);
-    applyPersonParam();
+    applyPersonParam(sorted);
   } catch (err) {
     console.error('Failed to load leaderboard:', err);
     showError();
