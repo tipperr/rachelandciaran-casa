@@ -229,6 +229,15 @@ function renderTable(sorted) {
 
 // ─── Person Card ──────────────────────────────────────────────────────────────
 
+function getMilestone(person, rank) {
+  if (rank === 1)           return '🏠 You\'re in first place.';
+  if (person.nights >= 20)  return '20-night club.';
+  if (person.nights >= 10)  return '10-night club.';
+  if (person.nights >= 5)   return '5-night club.';
+  if (person.visits === 1)  return 'First visit.';
+  return null;
+}
+
 function personalGapSentence(sorted, person, rank) {
   const leader = sorted[0];
   const tiedAtTop = sorted.filter(p => p.nights === leader.nights);
@@ -268,11 +277,19 @@ function renderPersonCard(sorted, person, rank) {
   meta.className = 'person-card-meta';
   meta.textContent = `${person.badge ? person.badge + ' ' : ''}${person.nights} night${person.nights !== 1 ? 's' : ''} · ${person.visits} visit${person.visits !== 1 ? 's' : ''} · last visit ${relativeTime(person.last_visit)}`;
 
+  const milestone = getMilestone(person, rank);
+  const milestoneEl = milestone ? document.createElement('div') : null;
+  if (milestoneEl) {
+    milestoneEl.className = 'person-card-milestone';
+    milestoneEl.textContent = milestone;
+  }
+
   const sentence = document.createElement('div');
   sentence.className = 'person-card-sentence';
   sentence.textContent = personalGapSentence(sorted, person, rank);
 
-  info.append(nameEl, meta, sentence);
+  if (milestoneEl) info.append(nameEl, meta, milestoneEl, sentence);
+  else info.append(nameEl, meta, sentence);
 
   const rankEl = document.createElement('div');
   rankEl.className = 'person-card-rank';
