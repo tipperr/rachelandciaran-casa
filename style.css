@@ -319,25 +319,6 @@ tr.highlighted {
   .person-card-name { font-size: 1.2rem; }
 }
 
-/* ─── Gap Narrative ──────────────────────────────────────────────────────────── */
-#gap-narrative {
-  margin: 1.5rem 0;
-  background: var(--surface);
-  border-left: 4px solid var(--accent);
-  padding: 1rem 1.25rem;
-  border-radius: 0 4px 4px 0;
-}
-
-#gap-narrative p {
-  font-size: 1.05rem;
-  font-weight: 600;
-  font-style: italic;
-  line-height: 1.5;
-  color: var(--text);
-}
-
-#gap-narrative p + p { margin-top: 0.5rem; }
-
 /* ─── Footer ─────────────────────────────────────────────────────────────────── */
 .site-footer {
   padding: 2rem 0 2.5rem;
