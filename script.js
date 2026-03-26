@@ -159,6 +159,12 @@ function renderPodium(sorted) {
     bar.style.height = `${barH}px`;
 
     slot.append(photoEl, nameEl, nightsEl, labelEl, bar);
+    if (person.subtitle) {
+      const subtitleEl = document.createElement('div');
+      subtitleEl.className = 'podium-subtitle';
+      subtitleEl.textContent = person.subtitle;
+      slot.appendChild(subtitleEl);
+    }
     podium.appendChild(slot);
   });
 }
@@ -328,7 +334,6 @@ async function fetchAndRender() {
     renderHeader(sorted);
     renderPodium(sorted);
     renderTable(sorted);
-    renderGapNarrative(sorted);
     showContent();
     startAnimations(sorted);
     applyPersonParam();
