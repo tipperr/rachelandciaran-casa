@@ -158,12 +158,13 @@ function renderPodium(sorted) {
     bar.className = 'podium-bar';
     bar.style.height = `${barH}px`;
 
-    slot.append(photoEl, nameEl, nightsEl, labelEl, bar);
     if (person.subtitle) {
       const subtitleEl = document.createElement('div');
       subtitleEl.className = 'podium-subtitle';
       subtitleEl.textContent = person.subtitle;
-      slot.appendChild(subtitleEl);
+      slot.append(photoEl, nameEl, subtitleEl, nightsEl, labelEl, bar);
+    } else {
+      slot.append(photoEl, nameEl, nightsEl, labelEl, bar);
     }
     podium.appendChild(slot);
   });
